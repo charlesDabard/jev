@@ -10,7 +10,7 @@ Une page HTML autonome pour découvrir Jev (`~typesafe/jev-latest`), un modèle 
 
 ## Ta clé et ton budget
 
-- La clé reste dans ton navigateur (stockage local de la page) et n'est envoyée qu'à `openrouter.ai`. Le lien « Oublier » l'efface, à faire sur un poste partagé.
+- La clé reste en mémoire dans la page, n'est jamais enregistrée sur le disque, et n'est envoyée qu'à `openrouter.ai`. Elle disparaît quand tu fermes ou recharges la page : il faut la recoller à chaque ouverture. C'est voulu, parce qu'un fichier HTML ouvert en double-clic partage son stockage avec tous les autres fichiers HTML locaux, et un fichier piégé pourrait la lire.
 - Chaque appel est facturé sur ton compte OpenRouter, avec le coût affiché sous la réponse. Un appel coûte une fraction de centime : mesuré, 38 décisions de jeu pour 0,0016 $.
 
 ## Les niveaux

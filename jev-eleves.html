@@ -224,7 +224,7 @@ Police Press Start 2P : Copyright 2012 The Press Start 2P Project Authors (cody@
     <main id="vue"></main>
     <div class="bas">
       <div class="note">
-        <p><strong>Ce qui tourne ici.</strong> Chaque bouton appelle réellement Jev (<code>~typesafe/jev-latest</code> via OpenRouter), directement depuis ton navigateur, avec ta propre clé OpenRouter. La clé reste dans ce navigateur et ne part que vers openrouter.ai. Le coût et la latence affichés sont ceux de l'appel réel.</p>
+        <p><strong>Ce qui tourne ici.</strong> Chaque bouton appelle réellement Jev (<code>~typesafe/jev-latest</code> via OpenRouter), directement depuis ton navigateur, avec ta propre clé OpenRouter. La clé reste en mémoire dans cette page, n’est jamais enregistrée, et ne part que vers openrouter.ai. Le coût et la latence affichés sont ceux de l'appel réel.</p>
         <p>Contenus de démonstration fictifs (fichiers, tickets, commandes).</p>
         <p>Le jeu du niveau 11 (Crossy Road en Three.js) tient dans la page : three.js et la police Press Start 2P sont embarqués en local, rien ne se charge depuis l’extérieur.</p>
       </div>
@@ -856,14 +856,16 @@ function renderSortie(zone, appel, res) {
 }
 
 // Version élève : pas de serveur, la clé de l'élève part directement vers OpenRouter.
-const CLE_STOCKAGE = 'jev-cle-openrouter';
+// Elle ne vit qu'en mémoire : une page ouverte en file:// partage son localStorage
+// avec TOUS les fichiers HTML locaux du navigateur (mesuré le 2026-10-07 sous Firefox
+// et Chromium : un autre .html lisait la clé). Recoller la clé à chaque ouverture
+// est le prix à payer pour qu'un fichier piégé ne puisse pas la voler.
 let cleMemoire = '';
-function lireCle() {
-  try { return localStorage.getItem(CLE_STOCKAGE) || cleMemoire; } catch { return cleMemoire; }
-}
+// Efface une clé laissée par la première version, qui la stockait.
+try { localStorage.removeItem('jev-cle-openrouter'); } catch {}
+function lireCle() { return cleMemoire; }
 function ecrireCle(cle) {
   cleMemoire = cle;
-  try { if (cle) localStorage.setItem(CLE_STOCKAGE, cle); else localStorage.removeItem(CLE_STOCKAGE); } catch {}
   majCle();
 }
 function majCle() {
